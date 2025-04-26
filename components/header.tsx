@@ -5,7 +5,7 @@ import { ThemeToggle } from "@/components/theme-toggle";
 export function Header() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="container flex h-16 items-center">
+      <div className="container mx-auto max-w-4xl px-4 flex h-16 items-center">
         <Link href="/" className="flex items-center gap-2 mr-4">
           <Book className="h-6 w-6" />
           <span className="font-semibold hidden sm:inline-block">WordWise</span>
