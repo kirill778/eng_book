@@ -37,9 +37,9 @@ This application uses Ollama for AI-powered word translations. To enable this fe
 
 1. Install Ollama from [https://ollama.ai/](https://ollama.ai/)
 2. Run Ollama on your local machine
-3. Pull a language model:
+3. Pull a language model (по умолчанию используется gemma3:12b):
    ```bash
-   ollama pull llama3
+   ollama pull gemma3:12b
    ```
 4. Ensure Ollama is running while using the application
 

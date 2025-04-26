@@ -6,6 +6,6 @@ interface OllamaConfig {
 
 export const ollamaConfig: OllamaConfig = {
   endpoint: 'http://localhost:11434/api/generate',
-  model: 'llama3', // Имя модели Ollama, которую вы используете
+  model: 'gemma3:12b', // Модель, которая уже установлена на ПК
   enabled: true // Можно переключить на false, чтобы всегда использовать моковые данные
 }; 
