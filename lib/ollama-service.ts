@@ -3,7 +3,8 @@ import { ollamaConfig } from './config';
 interface OllamaResponse {
   model: string;
   created_at: string;
-  message: {
+  response?: string;    // Для нового API
+  message?: {           // Для старого API
     role: string;
     content: string;
   };
@@ -41,6 +42,8 @@ export async function getTranslationFromOllama(
 }
 `;
 
+    console.log('Отправка запроса в Ollama...');
+    
     const response = await fetch(ollamaConfig.endpoint, {
       method: 'POST',
       headers: {
@@ -58,21 +61,34 @@ export async function getTranslationFromOllama(
     }
 
     const data = await response.json() as OllamaResponse;
+    console.log('Получен ответ от Ollama:', data);
     
-    // Извлекаем JSON из ответа
-    const jsonMatch = data.message.content.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) {
-      throw new Error('Invalid response format from Ollama');
+    // Получаем содержимое из ответа (поддержка разных форматов API)
+    const content = data.response || (data.message ? data.message.content : '');
+    
+    if (!content) {
+      throw new Error('Empty response from Ollama');
     }
     
-    const result = JSON.parse(jsonMatch[0]) as TranslationResult;
-    return result;
-  } catch (error) {
+    // Извлекаем JSON из ответа
+    const jsonMatch = content.match(/\{[\s\S]*\}/);
+    if (!jsonMatch) {
+      throw new Error('Invalid response format from Ollama: ' + content);
+    }
+    
+    try {
+      const result = JSON.parse(jsonMatch[0]) as TranslationResult;
+      return result;
+    } catch (parseError) {
+      console.error('JSON parse error:', parseError, 'Raw content:', content);
+      throw new Error('Failed to parse JSON from Ollama response');
+    }
+  } catch (error: any) { // Используем any для обработки ошибок различных типов
     console.error('Error calling Ollama:', error);
     return {
       translation: `Перевод для "${word}"`,
-      contextMeaning: `Невозможно получить перевод. Проверьте, запущен ли Ollama.`,
-      englishExplanation: `Unable to get translation. Please check if Ollama is running.`
+      contextMeaning: `Невозможно получить перевод. Проверьте, запущен ли Ollama. Ошибка: ${error.message || 'Неизвестная ошибка'}`,
+      englishExplanation: `Unable to get translation. Please check if Ollama is running. Error: ${error.message || 'Unknown error'}`
     };
   }
 } 

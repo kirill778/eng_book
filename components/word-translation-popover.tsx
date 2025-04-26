@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -31,12 +31,15 @@ export function WordTranslationPopover({
   const { addWord, isInVocabulary } = useVocabularyContext();
   const [isSaved, setIsSaved] = useState(isInVocabulary(word));
 
-  // Fetch translation when word changes
-  useState(() => {
+  // Fetch translation when word changes or popup opens
+  useEffect(() => {
     if (word && open) {
       setIsLoading(true);
+      console.log(`Запрос перевода для слова "${word}"`);
+      
       translateWord(word, context)
         .then(({ translation, contextMeaning, englishExplanation }) => {
+          console.log(`Получен перевод для "${word}":`, translation);
           setTranslation(translation);
           setContextMeaning(contextMeaning);
           setEnglishExplanation(englishExplanation);
@@ -44,10 +47,13 @@ export function WordTranslationPopover({
         })
         .catch((error) => {
           console.error("Error translating word:", error);
+          setTranslation(`Перевод для "${word}"`);
+          setContextMeaning(`Ошибка при переводе: ${error.message}`);
+          setEnglishExplanation(`Translation error: ${error.message}`);
           setIsLoading(false);
         });
     }
-  });
+  }, [word, context, open]);
 
   const handleAddToVocabulary = () => {
     const newWord: VocabularyWord = {
