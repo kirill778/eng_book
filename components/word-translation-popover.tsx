@@ -118,13 +118,6 @@ export function WordTranslationPopover({
                     </p>
                   </div>
                 )}
-
-                <div>
-                  <h4 className="text-xs font-semibold mb-1 text-muted-foreground">Context from article:</h4>
-                  <p className="text-xs italic text-muted-foreground border-l-2 pl-3 py-1">
-                    {context.length > 100 ? `"${context.substring(0, 100)}..."` : `"${context}"`}
-                  </p>
-                </div>
               </div>
             )}
           </CardContent>
