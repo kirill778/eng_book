@@ -27,6 +27,7 @@ export function WordTranslationPopover({
   const [isLoading, setIsLoading] = useState(true);
   const [translation, setTranslation] = useState("");
   const [contextMeaning, setContextMeaning] = useState("");
+  const [englishExplanation, setEnglishExplanation] = useState("");
   const { addWord, isInVocabulary } = useVocabularyContext();
   const [isSaved, setIsSaved] = useState(isInVocabulary(word));
 
@@ -35,9 +36,10 @@ export function WordTranslationPopover({
     if (word && open) {
       setIsLoading(true);
       translateWord(word, context)
-        .then(({ translation, contextMeaning }) => {
+        .then(({ translation, contextMeaning, englishExplanation }) => {
           setTranslation(translation);
           setContextMeaning(contextMeaning);
+          setEnglishExplanation(englishExplanation);
           setIsLoading(false);
         })
         .catch((error) => {
@@ -53,6 +55,7 @@ export function WordTranslationPopover({
       word,
       translation,
       contextMeaning,
+      englishExplanation,
       dateAdded: new Date().toISOString(),
       exampleSentence: context,
       articleId,
@@ -72,7 +75,9 @@ export function WordTranslationPopover({
           <CardHeader className="pb-2">
             <CardTitle className="text-xl">{word}</CardTitle>
             <CardDescription>
-              {isLoading ? "Loading translation..." : translation}
+              {isLoading ? "Loading translation..." : (
+                <span className="font-medium">{translation}</span>
+              )}
             </CardDescription>
           </CardHeader>
           <CardContent className="text-sm">
@@ -81,11 +86,23 @@ export function WordTranslationPopover({
                 <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
               </div>
             ) : (
-              <div>
-                <p className="text-muted-foreground mb-3">{contextMeaning}</p>
-                <p className="text-xs italic text-muted-foreground border-l-2 pl-3 py-1">
-                  {context.length > 100 ? `"${context.substring(0, 100)}..."` : `"${context}"`}
-                </p>
+              <div className="space-y-4">
+                <div>
+                  <h4 className="text-xs font-semibold mb-1 text-muted-foreground">Значение в контексте:</h4>
+                  <p className="text-muted-foreground">{contextMeaning}</p>
+                </div>
+                
+                <div>
+                  <h4 className="text-xs font-semibold mb-1 text-muted-foreground">English explanation:</h4>
+                  <p className="text-muted-foreground">{englishExplanation}</p>
+                </div>
+
+                <div>
+                  <h4 className="text-xs font-semibold mb-1 text-muted-foreground">Example:</h4>
+                  <p className="text-xs italic text-muted-foreground border-l-2 pl-3 py-1">
+                    {context.length > 100 ? `"${context.substring(0, 100)}..."` : `"${context}"`}
+                  </p>
+                </div>
               </div>
             )}
           </CardContent>
