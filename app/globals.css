@@ -105,6 +105,13 @@
   @apply text-gray-300;
 }
 
+/* Позиционирование попапа Radix справа */
+[data-radix-popper-content-wrapper] {
+  top: 2% !important;
+  right: 17% !important;
+  left: auto !important;
+}
+
 @layer utilities {
   .line-clamp-2 {
     display: -webkit-box;
