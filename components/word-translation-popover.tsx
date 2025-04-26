@@ -26,6 +26,7 @@ export function WordTranslationPopover({
 }: WordTranslationPopoverProps) {
   const [isLoading, setIsLoading] = useState(true);
   const [translation, setTranslation] = useState("");
+  const [synonyms, setSynonyms] = useState<string[]>([]);
   const [contextMeaning, setContextMeaning] = useState("");
   const [englishExplanation, setEnglishExplanation] = useState("");
   const [englishExample, setEnglishExample] = useState("");
@@ -39,9 +40,10 @@ export function WordTranslationPopover({
       console.log(`Запрос перевода для слова "${word}"`);
       
       translateWord(word, context)
-        .then(({ translation, contextMeaning, englishExplanation, englishExample }) => {
+        .then(({ translation, synonyms, contextMeaning, englishExplanation, englishExample }) => {
           console.log(`Получен перевод для "${word}":`, translation);
           setTranslation(translation);
+          setSynonyms(synonyms || []);
           setContextMeaning(contextMeaning);
           setEnglishExplanation(englishExplanation);
           setEnglishExample(englishExample || "");
@@ -50,6 +52,7 @@ export function WordTranslationPopover({
         .catch((error) => {
           console.error("Error translating word:", error);
           setTranslation(`Перевод для "${word}"`);
+          setSynonyms([]);
           setContextMeaning(`Ошибка при переводе: ${error.message}`);
           setEnglishExplanation(`Translation error: ${error.message}`);
           setEnglishExample("");
@@ -63,6 +66,7 @@ export function WordTranslationPopover({
       id: generateId(),
       word,
       translation,
+      synonyms,
       contextMeaning,
       englishExplanation,
       englishExample,
@@ -83,10 +87,21 @@ export function WordTranslationPopover({
       <PopoverContent className="w-[350px] p-0" align="center">
         <Card className="border-0 shadow-none">
           <CardHeader className="pb-2">
-            <CardTitle className="text-xl">{word}</CardTitle>
+            <CardTitle className="text-xl truncate">{word}</CardTitle>
             <CardDescription>
               {isLoading ? "Loading translation..." : (
-                <span className="font-medium">{translation}</span>
+                <div>
+                  <span className="font-medium">{translation}</span>
+                  {synonyms.length > 0 && (
+                    <div className="mt-1 flex flex-wrap gap-1 text-xs text-muted-foreground">
+                      {synonyms.map((syn, index) => (
+                        <span key={index} className="bg-secondary px-1.5 py-0.5 rounded-sm">
+                          {syn}
+                        </span>
+                      ))}
+                    </div>
+                  )}
+                </div>
               )}
             </CardDescription>
           </CardHeader>

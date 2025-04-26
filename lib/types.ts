@@ -10,6 +10,7 @@ export interface VocabularyWord {
   id: string;
   word: string;
   translation: string;
+  synonyms?: string[];
   contextMeaning: string;
   englishExplanation?: string;
   englishExample?: string;

@@ -46,8 +46,8 @@ export function ArticleReader({ article }: ArticleReaderProps) {
     
     const selectedText = selection.toString().trim();
     
-    // Only process single words (no spaces)
-    if (selectedText && !selectedText.includes(" ")) {
+    // Process both single words and multiple words
+    if (selectedText) {
       const context = getWordContext(article.content, selectedText);
       setSelectedWord(selectedText);
       setWordContext(context);

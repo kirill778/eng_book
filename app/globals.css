@@ -107,7 +107,7 @@
 
 /* Позиционирование попапа Radix справа */
 [data-radix-popper-content-wrapper] {
-  top: 2% !important;
+  top: 6% !important;
   right: 17% !important;
   left: auto !important;
 }
