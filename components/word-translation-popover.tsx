@@ -7,7 +7,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { translateWord, generateId } from "@/lib/utils";
 import { useVocabularyContext } from "@/components/vocabulary-context";
 import { VocabularyWord } from "@/lib/types";
-import { Bookmark, BookmarkCheck, Loader2 } from "lucide-react";
+import { Bookmark, BookmarkCheck, Loader2, Quote } from "lucide-react";
 
 interface WordTranslationPopoverProps {
   word: string;
@@ -28,6 +28,7 @@ export function WordTranslationPopover({
   const [translation, setTranslation] = useState("");
   const [contextMeaning, setContextMeaning] = useState("");
   const [englishExplanation, setEnglishExplanation] = useState("");
+  const [englishExample, setEnglishExample] = useState("");
   const { addWord, isInVocabulary } = useVocabularyContext();
   const [isSaved, setIsSaved] = useState(isInVocabulary(word));
 
@@ -38,11 +39,12 @@ export function WordTranslationPopover({
       console.log(`Запрос перевода для слова "${word}"`);
       
       translateWord(word, context)
-        .then(({ translation, contextMeaning, englishExplanation }) => {
+        .then(({ translation, contextMeaning, englishExplanation, englishExample }) => {
           console.log(`Получен перевод для "${word}":`, translation);
           setTranslation(translation);
           setContextMeaning(contextMeaning);
           setEnglishExplanation(englishExplanation);
+          setEnglishExample(englishExample || "");
           setIsLoading(false);
         })
         .catch((error) => {
@@ -50,6 +52,7 @@ export function WordTranslationPopover({
           setTranslation(`Перевод для "${word}"`);
           setContextMeaning(`Ошибка при переводе: ${error.message}`);
           setEnglishExplanation(`Translation error: ${error.message}`);
+          setEnglishExample("");
           setIsLoading(false);
         });
     }
@@ -62,6 +65,7 @@ export function WordTranslationPopover({
       translation,
       contextMeaning,
       englishExplanation,
+      englishExample,
       dateAdded: new Date().toISOString(),
       exampleSentence: context,
       articleId,
@@ -103,8 +107,20 @@ export function WordTranslationPopover({
                   <p className="text-muted-foreground">{englishExplanation}</p>
                 </div>
 
+                {englishExample && (
+                  <div>
+                    <h4 className="text-xs font-semibold mb-1 text-muted-foreground flex items-center gap-1">
+                      <Quote className="h-3 w-3" />
+                      <span>Example usage:</span>
+                    </h4>
+                    <p className="text-xs italic text-muted-foreground border-l-2 pl-3 py-1">
+                      {englishExample}
+                    </p>
+                  </div>
+                )}
+
                 <div>
-                  <h4 className="text-xs font-semibold mb-1 text-muted-foreground">Example:</h4>
+                  <h4 className="text-xs font-semibold mb-1 text-muted-foreground">Context from article:</h4>
                   <p className="text-xs italic text-muted-foreground border-l-2 pl-3 py-1">
                     {context.length > 100 ? `"${context.substring(0, 100)}..."` : `"${context}"`}
                   </p>

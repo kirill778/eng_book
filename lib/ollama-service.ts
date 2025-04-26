@@ -15,6 +15,7 @@ interface TranslationResult {
   translation: string;
   contextMeaning: string;
   englishExplanation: string;
+  englishExample: string;
 }
 
 /**
@@ -38,8 +39,11 @@ export async function getTranslationFromOllama(
 {
   "translation": "перевод слова на русский",
   "contextMeaning": "объяснение значения слова в данном контексте на русском, 1-2 предложения",
-  "englishExplanation": "объяснение значения слова на английском, 1-2 предложения"
+  "englishExplanation": "объяснение значения слова на английском, 1-2 предложения",
+  "englishExample": "пример использования слова в предложении из книги, фильма или другого реального контекста. Укажи источник в скобках, если известен."
 }
+
+Для поля englishExample постарайся привести интересный и показательный пример из известных книг, фильмов, речей знаменитостей, статей или других источников. Если не можешь вспомнить реальный пример, создай правдоподобный в стиле известного автора или жанра.
 `;
 
     console.log('Отправка запроса в Ollama...');
@@ -78,6 +82,12 @@ export async function getTranslationFromOllama(
     
     try {
       const result = JSON.parse(jsonMatch[0]) as TranslationResult;
+      
+      // Если поле englishExample отсутствует, добавим его с пустым значением
+      if (!result.englishExample) {
+        result.englishExample = "No example available.";
+      }
+      
       return result;
     } catch (parseError) {
       console.error('JSON parse error:', parseError, 'Raw content:', content);
@@ -88,7 +98,8 @@ export async function getTranslationFromOllama(
     return {
       translation: `Перевод для "${word}"`,
       contextMeaning: `Невозможно получить перевод. Проверьте, запущен ли Ollama. Ошибка: ${error.message || 'Неизвестная ошибка'}`,
-      englishExplanation: `Unable to get translation. Please check if Ollama is running. Error: ${error.message || 'Unknown error'}`
+      englishExplanation: `Unable to get translation. Please check if Ollama is running. Error: ${error.message || 'Unknown error'}`,
+      englishExample: "No example available."
     };
   }
 } 

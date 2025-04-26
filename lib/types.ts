@@ -12,6 +12,7 @@ export interface VocabularyWord {
   translation: string;
   contextMeaning: string;
   englishExplanation?: string;
+  englishExample?: string;
   dateAdded: string;
   exampleSentence?: string;
   articleId?: string;

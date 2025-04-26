@@ -22,7 +22,8 @@ export function formatDate(date: string | Date): string {
 export async function translateWord(word: string, context: string): Promise<{ 
   translation: string; 
   contextMeaning: string;
-  englishExplanation: string; 
+  englishExplanation: string;
+  englishExample: string;
 }> {
   try {
     // Пытаемся получить перевод через Ollama
@@ -36,41 +37,55 @@ export async function translateWord(word: string, context: string): Promise<{
       translation: string; 
       contextMeaning: string;
       englishExplanation: string;
+      englishExample: string;
     }> = {
       "eloquent": {
         translation: "красноречивый",
         contextMeaning: "Выразительный, убедительный и впечатляющий в своём проявлении.",
-        englishExplanation: "Fluent or persuasive in speaking or writing, especially in a way that is moving or effective."
+        englishExplanation: "Fluent or persuasive in speaking or writing, especially in a way that is moving or effective.",
+        englishExample: "His eloquent speech moved the audience to tears. (Martin Luther King's 'I Have a Dream')"
       },
       "innovation": {
         translation: "инновация",
         contextMeaning: "Новая идея, метод или устройство, внедрение чего-то нового.",
-        englishExplanation: "The action or process of innovating, introducing new ideas, methods, or products."
+        englishExplanation: "The action or process of innovating, introducing new ideas, methods, or products.",
+        englishExample: "The iPhone was a radical innovation that changed the way we communicate. (Steve Jobs, 2007)"
       },
       "remarkable": {
         translation: "замечательный",
         contextMeaning: "Заслуживающий внимания из-за необычности или исключительности.",
-        englishExplanation: "Worthy of attention because unusual or exceptional, notably or conspicuously unusual."
+        englishExplanation: "Worthy of attention because unusual or exceptional, notably or conspicuously unusual.",
+        englishExample: "It is remarkable how quickly children can learn a new language. (Noam Chomsky, 'Language and Mind')"
       },
       "ubiquitous": {
         translation: "вездесущий",
         contextMeaning: "Присутствующий или встречающийся повсюду одновременно.",
-        englishExplanation: "Present, appearing, or found everywhere; omnipresent."
+        englishExplanation: "Present, appearing, or found everywhere; omnipresent.",
+        englishExample: "Smartphones have become ubiquitous in modern society. (The New York Times)"
       },
       "ambiguous": {
         translation: "двусмысленный",
         contextMeaning: "Открытый для нескольких интерпретаций; имеющий двойной смысл; неясный.",
-        englishExplanation: "Open to more than one interpretation; having a double meaning; unclear or inexact."
+        englishExplanation: "Open to more than one interpretation; having a double meaning; unclear or inexact.",
+        englishExample: "The ending of the movie 'Inception' was deliberately ambiguous, leaving viewers to decide for themselves. (Christopher Nolan)"
       },
       "fundamental": {
         translation: "фундаментальный",
         contextMeaning: "Составляющий основу или ядро; имеющий центральное значение.",
-        englishExplanation: "Forming a necessary base or core; of central importance."
+        englishExplanation: "Forming a necessary base or core; of central importance.",
+        englishExample: "The right to free speech is fundamental to democracy. (U.S. Constitution, First Amendment)"
       },
       "data": {
         translation: "данные",
         contextMeaning: "Факты и статистика, собранные для анализа или справки.",
-        englishExplanation: "Facts and statistics collected together for reference or analysis."
+        englishExplanation: "Facts and statistics collected together for reference or analysis.",
+        englishExample: "The scientist carefully analyzed the data from her experiment. (Carl Sagan, 'Cosmos')"
+      },
+      "artificial": {
+        translation: "искусственный",
+        contextMeaning: "Созданный человеком, а не возникший естественным путем.",
+        englishExplanation: "Made or produced by human beings rather than occurring naturally.",
+        englishExample: "Arthur C. Clarke wrote: 'Any sufficiently advanced technology is indistinguishable from magic.' He was referring to artificial systems that seem magical in their capabilities. (Arthur C. Clarke, 'Profiles of the Future')"
       }
     };
   
@@ -78,7 +93,8 @@ export async function translateWord(word: string, context: string): Promise<{
     return mockTranslations[word.toLowerCase()] || {
       translation: `Перевод для "${word}"`,
       contextMeaning: `Это слово означает что-то релевантное контексту: "${context.substring(0, 50)}..."`,
-      englishExplanation: `This word means something relevant to the context: "${context.substring(0, 50)}..."`
+      englishExplanation: `This word means something relevant to the context: "${context.substring(0, 50)}..."`,
+      englishExample: `Example usage: "${word} is an interesting term that appears in various contexts."`
     };
   }
 }
