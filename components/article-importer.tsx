@@ -34,7 +34,7 @@ export function ArticleImporter() {
     const newArticle: Article = {
       id: generateId(),
       title: title.trim(),
-      content: content.trim(),
+      content: processContent(content.trim()),
       source: source.trim() || undefined,
       dateAdded: new Date().toISOString()
     };
@@ -42,6 +42,12 @@ export function ArticleImporter() {
     addArticle(newArticle);
     setOpen(false);
     resetForm();
+  };
+
+  // Process content to properly handle paragraphs
+  const processContent = (text: string) => {
+    // Convert double line breaks to paragraphs
+    return text.split(/\n\s*\n/).map(paragraph => `<p>${paragraph.trim()}</p>`).join('');
   };
 
   const resetForm = () => {

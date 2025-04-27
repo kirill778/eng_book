@@ -5,6 +5,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Header } from '@/components/header';
 import { ArticlesProvider } from '@/components/articles-context';
 import { VocabularyProvider } from '@/components/vocabulary-context';
+import { Toaster } from '@/components/toaster';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -37,6 +38,7 @@ export default function RootLayout({
                   </div>
                 </main>
               </div>
+              <Toaster />
             </VocabularyProvider>
           </ArticlesProvider>
         </ThemeProvider>

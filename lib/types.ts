@@ -4,6 +4,7 @@ export interface Article {
   content: string;
   source?: string;
   dateAdded: string;
+  images?: Array<{src: string, alt: string, position: number}>;
 }
 
 export interface VocabularyWord {
