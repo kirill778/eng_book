@@ -2,6 +2,7 @@ import { ArticleImporter } from "@/components/article-importer";
 import { UrlArticleImporter } from "@/components/url-article-importer";
 import { ArticleList } from "@/components/article-list";
 import { DemoDataInitializer } from "@/components/demo-data-initializer";
+import { QuickTextInput } from "@/components/quick-text-input";
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
           <p className="text-muted-foreground">Import and read English articles to expand your vocabulary</p>
         </div>
         <div className="flex gap-2 flex-wrap">
+          <QuickTextInput />
           <UrlArticleImporter />
           <ArticleImporter />
         </div>
